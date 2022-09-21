@@ -4,5 +4,6 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    protected float WalkSpeed;
+    protected float WalkSpeed = 5;
+    public int Health = 10;
 }
