@@ -29,6 +29,10 @@ public class CharacterPlayer : Character, IControllObject
         playerPrefab.OnTriggerEnterEvent -= IEnter;
         playerPrefab.OnTriggerExitEvent -= IExit;
     }
+    private void Update()
+    {
+        stateMachine.CurrentState.LogicUpdate();
+    }
     private void IEnter(ICharacterPlayerVisitor other)
     {
         (stateMachine.CurrentState as PlayerState).IEnter(other);
@@ -47,5 +51,30 @@ public class CharacterPlayer : Character, IControllObject
         NewPos.z = transform.position.z + MoveVector.x;
         NewPos.y = transform.position.y;
         transform.position = Vector3.MoveTowards(transform.position, NewPos, WalkSpeed * MoveVector.magnitude * Time.deltaTime);
+    }
+    public IEnumerator Shoot()
+    {
+        while(true)
+        {
+            CharacterAngryNPC[] NPCArray = FindObjectsOfType<CharacterAngryNPC>();
+
+            if (NPCArray.Length <= 0)
+            {
+                yield return null;
+                continue;
+            }
+
+            CharacterAngryNPC ClosiestEnemy = NPCArray[0];
+            foreach (var Enemy in NPCArray)
+            {
+                if(Vector3.Distance(transform.position, ClosiestEnemy.transform.position) > Vector3.Distance(transform.position, Enemy.transform.position))
+                {
+                    ClosiestEnemy = Enemy;
+                }
+            }
+
+            Missile.CreateMe(ClosiestEnemy.gameObject, transform.position);
+            yield return new WaitForSeconds(1);
+        }
     }
 }

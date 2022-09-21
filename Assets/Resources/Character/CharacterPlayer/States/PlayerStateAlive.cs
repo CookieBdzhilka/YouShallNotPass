@@ -8,6 +8,12 @@ public class PlayerStateAlive : PlayerState
     {
     }
 
+    public override void Enter()
+    {
+        CharacterPlayer characterPlayer = (ContextObject as CharacterPlayer);
+        characterPlayer.StartCoroutine(nameof(characterPlayer.Shoot));
+    }
+
     public override void IEnter(ICharacterPlayerVisitor playerVisitor)
     {
         playerVisitor.CharacterPlaerEnter(ContextObject as CharacterPlayer);
@@ -17,4 +23,5 @@ public class PlayerStateAlive : PlayerState
     {
         playerVisitor.CharacterPlayerExit(ContextObject as CharacterPlayer);
     }
+
 }

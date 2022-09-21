@@ -5,5 +5,12 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     protected float WalkSpeed = 5;
-    public int Health = 10;
+    protected int health = 10;
+
+    public void SetHealth(int NewHealth)
+    {
+        health = NewHealth;
+        if (health < 0)
+            Destroy(gameObject);
+    }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterAngryNPC : Character
+public class CharacterAngryNPC : Character, IMissileVisitor
 {
     GameObject Target;
     public StateMachine stateMachine { get; private set; }
@@ -43,5 +43,10 @@ public class CharacterAngryNPC : Character
     public void FixedUpdate()
     {
         stateMachine.CurrentState.PhysicsUpdate();
+    }
+
+    public void Shooted(Missile missile)
+    {
+        SetHealth(health - missile.Damage);
     }
 }

@@ -21,18 +21,21 @@ public class AreaFight : Area, ICharacterPlayerVisitor
     }
     IEnumerator CreateTimer()
     {
-        while(Enemies.Count < 10)
+        while (true)
         {
-            Vector3 RandomPos;
-            Vector3 MyBoundSize = GetComponent<MeshRenderer>().bounds.size;
-            RandomPos.x = Random.Range(-MyBoundSize.x / 3, MyBoundSize.x / 3);
-            RandomPos.y = MyBoundSize.y;
-            RandomPos.z = Random.Range(-MyBoundSize.z / 3, MyBoundSize.z / 3);
+            while (Enemies.Count < 10)
+            {
+                Vector3 RandomPos;
+                Vector3 MyBoundSize = GetComponent<MeshRenderer>().bounds.size;
+                RandomPos.x = Random.Range(-MyBoundSize.x / 3, MyBoundSize.x / 3);
+                RandomPos.y = MyBoundSize.y;
+                RandomPos.z = Random.Range(-MyBoundSize.z / 3, MyBoundSize.z / 3);
 
-            CharacterAngryNPC NewNPC = CharacterAngryNPC.CreateMe(RandomPos);
-            Enemies.Add(NewNPC);
-            (stateMachine.CurrentState as AreaFightState).CurrentTask();
-            yield return new WaitForSeconds(2);
+                CharacterAngryNPC NewNPC = CharacterAngryNPC.CreateMe(RandomPos);
+                Enemies.Add(NewNPC);
+                (stateMachine.CurrentState as AreaFightState).CurrentTask();
+                yield return new WaitForSeconds(2);
+            }
         }
     }
     public void AttackCommand()
