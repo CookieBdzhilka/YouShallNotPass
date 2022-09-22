@@ -112,6 +112,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
         SetHealth(health - missile.Damage);
     }
 
+    //Переопределение метода отца
     public override void Dead()
     {
         Destroy(gameObject);
