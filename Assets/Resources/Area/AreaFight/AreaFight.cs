@@ -33,9 +33,11 @@ public class AreaFight : Area, ICharacterPlayerVisitor
 
                 CharacterAngryNPC NewNPC = CharacterAngryNPC.CreateMe(RandomPos);
                 Enemies.Add(NewNPC);
+                NewNPC.OnDestroyEvent += DeleteEnemy;
                 (stateMachine.CurrentState as AreaFightState).CurrentTask();
                 yield return new WaitForSeconds(2);
             }
+            yield return null;
         }
     }
     public void AttackCommand()
@@ -55,13 +57,16 @@ public class AreaFight : Area, ICharacterPlayerVisitor
             Enemy.CalmDown();
         }
     }
+    public void DeleteEnemy(Character angryNPC)
+    {
+        Enemies.Remove(angryNPC as CharacterAngryNPC);
+    }
     public void CharacterPlaerEnter(CharacterPlayer characterPlayer)
     {
         Intrudor = characterPlayer.gameObject;
         stateMachine.Initialize(new AreaFightStateWar(this));
         AttackCommand();
     }
-
     public void CharacterPlayerExit(CharacterPlayer characterPlayer)
     {
         Intrudor = null;
