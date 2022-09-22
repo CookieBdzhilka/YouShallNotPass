@@ -11,6 +11,6 @@ public class AreaFightStateIdle : AreaFightState
     public override void CurrentTask()
     {
         AreaFight areaFight = ContextObject as AreaFight;
-        areaFight.CalmCommand();
+        areaFight.CommandCalm?.Invoke();
     }
 }

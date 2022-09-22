@@ -8,10 +8,11 @@ public class PlayerStateAlive : PlayerState
     {
     }
 
-    public override void Enter()
+    public override void Die()
     {
-        CharacterPlayer characterPlayer = (ContextObject as CharacterPlayer);
-        characterPlayer.StartCoroutine(nameof(characterPlayer.Shoot));
+        CharacterPlayer cp = ContextObject as CharacterPlayer;
+        cp.stateMachine.ChangeState(new PlayerStateDead(cp));
+        cp.OnDeadEvent?.Invoke();
     }
 
     public override void IEnter(ICharacterPlayerVisitor playerVisitor)

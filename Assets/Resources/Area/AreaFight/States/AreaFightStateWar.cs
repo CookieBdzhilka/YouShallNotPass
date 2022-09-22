@@ -11,6 +11,6 @@ public class AreaFightStateWar : AreaFightState
     public override void CurrentTask()
     {
         AreaFight areaFight = ContextObject as AreaFight;
-        areaFight.AttackCommand();
+        areaFight.CommandAttack?.Invoke(areaFight.Intrudor);
     }
 }

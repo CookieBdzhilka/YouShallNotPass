@@ -4,16 +4,29 @@ using UnityEngine;
 
 public class CharacterPlayer : Character, IControllObject
 {
+    //=============================================================================================
+    //Ссылки на другие объекты
     public PlayerPrefab playerPrefab;
+    public Canvas PlayerHUD;
     public StateMachine stateMachine { get; private set; }
+    //=============================================================================================
 
+    //=============================================================================================
+    //Личные поля
     private Rigidbody PlayerRB;
+    private Vector3 StartPos;
+    //=============================================================================================
 
+    //=============================================================================================
+    //Методы Unity
     private void Awake()
     {
         PlayerRB = playerPrefab.GetComponent<Rigidbody>();
+
         stateMachine = new StateMachine();
         stateMachine.Initialize(new PlayerStateAlive(this));
+
+        StartPos = transform.position;
     }
     private void Start()
     {
@@ -33,6 +46,11 @@ public class CharacterPlayer : Character, IControllObject
     {
         stateMachine.CurrentState.LogicUpdate();
     }
+    //=============================================================================================
+
+    //=============================================================================================
+    //Методы объекта
+    //Префаб с чем-то столкнулся
     private void IEnter(ICharacterPlayerVisitor other)
     {
         (stateMachine.CurrentState as PlayerState).IEnter(other);
@@ -41,7 +59,14 @@ public class CharacterPlayer : Character, IControllObject
     {
         (stateMachine.CurrentState as PlayerState).IExit(other);
     }
+    //Команда двигаться
     public void MoveObject(Vector2 MoveVector)
+    {
+        (stateMachine.CurrentState as PlayerState).MoveObjectCommand(MoveVector);
+    }
+
+    //Возможности объекта
+    public void Move(Vector2 MoveVector)
     {
         Vector3 NewPos = new Vector3(MoveVector.x, 0f, MoveVector.y) * WalkSpeed;
         NewPos = Vector3.ClampMagnitude(NewPos, WalkSpeed);
@@ -52,6 +77,29 @@ public class CharacterPlayer : Character, IControllObject
         NewPos.y = transform.position.y;
         transform.position = Vector3.MoveTowards(transform.position, NewPos, WalkSpeed * MoveVector.magnitude * Time.deltaTime);
     }
+    public void StartShooting()
+    {
+        StopCoroutine(nameof(Shoot));
+        StartCoroutine(nameof(Shoot));
+    }
+    public void StopShooting()
+    {
+        StopCoroutine(nameof(Shoot));
+    }
+    public override void Dead()
+    {
+        (stateMachine.CurrentState as PlayerState).Die();
+    }
+    public void Ressurect()
+    {
+        transform.position = StartPos;
+        health = 10;
+        stateMachine.ChangeState(new PlayerStateAlive(this));
+    }
+    //=============================================================================================
+
+    //=============================================================================================
+    //Корутины
     public IEnumerator Shoot()
     {
         while(true)
@@ -77,4 +125,5 @@ public class CharacterPlayer : Character, IControllObject
             yield return new WaitForSeconds(1);
         }
     }
+    //=============================================================================================
 }

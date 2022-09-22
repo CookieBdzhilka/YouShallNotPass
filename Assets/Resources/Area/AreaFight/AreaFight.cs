@@ -5,10 +5,24 @@ using UnityEngine.Events;
 
 public class AreaFight : Area, ICharacterPlayerVisitor
 {
+    //=============================================================================================
     List<CharacterAngryNPC> Enemies;
-    public StateMachine stateMachine { get; private set; }
-    GameObject Intrudor;
+    public Character Intrudor { get; private set; } // Объект, который вошел в поле
+    //=============================================================================================
 
+    //=============================================================================================
+    //Машина состояний
+    public StateMachine stateMachine { get; private set; }
+    //=============================================================================================
+
+    //=============================================================================================
+    //События
+    public UnityAction<Character> CommandAttack;
+    public UnityAction CommandCalm;
+    //=============================================================================================
+
+    //=============================================================================================
+    //Методы Unity
     public void Awake()
     {
         Enemies = new List<CharacterAngryNPC>();
@@ -19,6 +33,37 @@ public class AreaFight : Area, ICharacterPlayerVisitor
     {
         StartCoroutine(nameof(CreateTimer));
     }
+    //=============================================================================================
+
+    //=============================================================================================
+    //Методы объекта
+    public void DeleteEnemy(Character angryNPC)
+    {
+        CharacterAngryNPC Enemy = angryNPC as CharacterAngryNPC;
+        CommandAttack -= Enemy.CommandToFollow;
+        CommandCalm -= Enemy.CalmDown;
+        Enemies.Remove(Enemy);
+    }
+    public void CharacterPlaerEnter(CharacterPlayer characterPlayer)
+    {
+        Debug.Log("Игрок вошел в меня!");
+        Intrudor = characterPlayer;
+        stateMachine.Initialize(new AreaFightStateWar(this));
+        characterPlayer.StartShooting();
+        CommandAttack?.Invoke(Intrudor);
+    }
+    public void CharacterPlayerExit(CharacterPlayer characterPlayer)
+    {
+        Debug.Log("Игрок вышел из меня!");
+        Intrudor = null;
+        stateMachine.Initialize(new AreaFightStateIdle(this));
+        characterPlayer.StopShooting();
+        CommandCalm?.Invoke();
+    }
+    //=============================================================================================
+
+    //=============================================================================================
+    //Корутины
     IEnumerator CreateTimer()
     {
         while (true)
@@ -34,43 +79,14 @@ public class AreaFight : Area, ICharacterPlayerVisitor
                 CharacterAngryNPC NewNPC = CharacterAngryNPC.CreateMe(RandomPos);
                 Enemies.Add(NewNPC);
                 NewNPC.OnDestroyEvent += DeleteEnemy;
+                CommandAttack += NewNPC.CommandToFollow;
+                CommandCalm += NewNPC.CalmDown;
+
                 (stateMachine.CurrentState as AreaFightState).CurrentTask();
                 yield return new WaitForSeconds(2);
             }
             yield return null;
         }
     }
-    public void AttackCommand()
-    {
-        if (Intrudor == null)
-            return;
-
-        foreach (var Enemy in Enemies)
-        {
-            Enemy.AttackTarget(Intrudor);
-        }
-    }    
-    public void CalmCommand()
-    {
-        foreach (var Enemy in Enemies)
-        {
-            Enemy.CalmDown();
-        }
-    }
-    public void DeleteEnemy(Character angryNPC)
-    {
-        Enemies.Remove(angryNPC as CharacterAngryNPC);
-    }
-    public void CharacterPlaerEnter(CharacterPlayer characterPlayer)
-    {
-        Intrudor = characterPlayer.gameObject;
-        stateMachine.Initialize(new AreaFightStateWar(this));
-        AttackCommand();
-    }
-    public void CharacterPlayerExit(CharacterPlayer characterPlayer)
-    {
-        Intrudor = null;
-        stateMachine.Initialize(new AreaFightStateIdle(this));
-        CalmCommand();
-    }
+    //=============================================================================================
 }

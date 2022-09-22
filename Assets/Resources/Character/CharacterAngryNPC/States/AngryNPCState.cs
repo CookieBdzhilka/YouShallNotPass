@@ -6,6 +6,10 @@ public class AngryNPCState : State
 {
     public AngryNPCState(CharacterAngryNPC Object) : base(Object)
     {
-        ContextObject = Object;
+    }
+    public virtual void CommandToFollow(Character character)
+    {
+        CharacterAngryNPC AngryNPCContext = (ContextObject as CharacterAngryNPC);
+        AngryNPCContext.FollowTarget(character);
     }
 }

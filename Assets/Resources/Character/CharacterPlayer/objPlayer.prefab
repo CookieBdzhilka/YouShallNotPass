@@ -360,6 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 2911676421463036336}
+  PlayerHUD: {fileID: 4381223874590984392}
 --- !u!1001 &6984609631731874306
 PrefabInstance:
   m_ObjectHideFlags: 0

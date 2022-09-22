@@ -8,6 +8,12 @@ public class AngryNPCStateAttack : AngryNPCState
     {
     }
 
+    public override void Enter()
+    {
+        CharacterAngryNPC AngryNPCContext = (ContextObject as CharacterAngryNPC);
+        AngryNPCContext.PlayAnimation("AngryNPCWalk");
+    }
+
     public override void PhysicsUpdate()
     {
         CharacterAngryNPC characterAngryNPC = ContextObject as CharacterAngryNPC;

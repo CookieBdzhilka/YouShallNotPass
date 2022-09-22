@@ -16,4 +16,13 @@ public class PlayerState : State
     {
 
     }
+    public virtual void MoveObjectCommand(Vector2 NewPos)
+    {
+        CharacterPlayer cp = (ContextObject as CharacterPlayer);
+        cp.Move(NewPos);
+    }
+    public virtual void Die()
+    {
+
+    }
 }
