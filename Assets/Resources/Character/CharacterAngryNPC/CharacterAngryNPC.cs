@@ -103,6 +103,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     public void CalmDown()
     {
         Target = null;
+        MeleeArea.Sleep = true;
         stateMachine.ChangeState(new AngryNPCStateIdle(this));
     }
 
