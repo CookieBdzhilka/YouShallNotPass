@@ -8,16 +8,19 @@ public abstract class Character : MonoBehaviour
     //=============================================================================================
     //Харрактеристики персонажа
     protected float WalkSpeed = 5;
+    protected int maxHealth = 10;
     protected int health = 10;
     protected int force = 2;
 
     public int Health { get { return health; } set { } }
+    public int MaxHealth { get { return maxHealth; } set { } }
     //=============================================================================================
 
     //=============================================================================================
     //События персонажа
     public UnityAction<Character> OnDestroyEvent;
     public UnityAction OnDeadEvent;
+    public UnityAction<int> OnHealthChanged;
     //=============================================================================================
 
     //=============================================================================================
@@ -33,8 +36,12 @@ public abstract class Character : MonoBehaviour
     public void SetHealth(int NewHealth)
     {
         health = NewHealth;
-        if (health < 0)
+        if (health <= 0)
+        {
             Dead();
+            health = 0;
+        }
+        OnHealthChanged?.Invoke(health);
     }
     public virtual void Dead()
     {
