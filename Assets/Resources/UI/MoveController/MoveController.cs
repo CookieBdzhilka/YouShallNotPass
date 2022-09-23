@@ -51,25 +51,17 @@ public class MoveController : MonoBehaviour
         while (true)
         {
             Vector3 MousePos = Input.mousePosition;
+            RectTransform ContainerRect = GetComponent<RectTransform>();
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent<RectTransform>(), MousePos, Camera.main, out var localPosition))
             {
-                
-                Vector2 JoystickPositionX = new Vector2(Joystick.transform.localPosition.x, 0);
-                Vector2 JoystickPositionY = new Vector2(0, Joystick.transform.localPosition.y);
-                Vector2 localPositionX = new Vector2(localPosition.x, 0);
-                Vector2 localPositionY = new Vector2(0, localPosition.y);
 
-                localPosition.x = GetComponent<RectTransform>().rect.Contains(JoystickPositionX) ||
-                                    GetComponent<RectTransform>().rect.Contains(localPositionX) ? localPosition.x : JoystickPositionX.x;
-                localPosition.y = GetComponent<RectTransform>().rect.Contains(JoystickPositionY) ||
-                                    GetComponent<RectTransform>().rect.Contains(localPositionY) ? localPosition.y : JoystickPositionY.y;
-                
-                //if(GetComponent<RectTransform>().rect.Contains(Joystick.transform.localPosition))
+                localPosition.x = Mathf.Clamp(localPosition.x, -ContainerRect.sizeDelta.x / 2, ContainerRect.sizeDelta.x / 2);
+                localPosition.y = Mathf.Clamp(localPosition.y, -ContainerRect.sizeDelta.y / 2, ContainerRect.sizeDelta.y / 2);
+
                 Joystick.transform.localPosition = Vector3.MoveTowards(Joystick.transform.localPosition, localPosition, 1000 * Time.deltaTime);
             }
 
-            joyValue = new Vector2(Joystick.transform.localPosition.x/Joystick.GetComponent<RectTransform>().sizeDelta.x
-                                        , Joystick.transform.localPosition.y / Joystick.GetComponent<RectTransform>().sizeDelta.y);
+            joyValue = new Vector2((localPosition.x / ContainerRect.sizeDelta.x) * 2, (localPosition.y / ContainerRect.sizeDelta.y) * 2);
 
             controllObject.MoveObject(joyValue);
             yield return null;
