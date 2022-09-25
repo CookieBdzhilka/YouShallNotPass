@@ -15,6 +15,6 @@ public class AngryNPCStateAttacking : AngryNPCState
     public override void Enter()
     {
         CharacterAngryNPC AngryNPCContext = (ContextObject as CharacterAngryNPC);
-        AngryNPCContext.PlayAnimation("AngryNPCAttack");
+        AngryNPCContext.PlayAnimation("Attack");
     }
 }

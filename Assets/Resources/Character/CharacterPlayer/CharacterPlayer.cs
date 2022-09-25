@@ -102,6 +102,7 @@ public class CharacterPlayer : Character, IControllObject
     {
         while(true)
         {
+            yield return new WaitForSeconds(1);
             CharacterAngryNPC[] NPCArray = FindObjectsOfType<CharacterAngryNPC>();
 
             if (NPCArray.Length <= 0)
@@ -120,7 +121,6 @@ public class CharacterPlayer : Character, IControllObject
             }
 
             Missile.CreateMe(ClosiestEnemy.gameObject, transform.position);
-            yield return new WaitForSeconds(1);
         }
     }
     //=============================================================================================

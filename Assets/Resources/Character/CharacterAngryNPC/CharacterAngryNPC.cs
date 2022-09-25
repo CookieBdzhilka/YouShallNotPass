@@ -24,7 +24,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     //Статические методы
     public static CharacterAngryNPC CreateMe(Vector3 StartPos = new Vector3())
     {
-        CharacterAngryNPC NewObject = Resources.Load<CharacterAngryNPC>("Character/CharacterAngryNPC/objCharacterAngryNPC");
+        CharacterAngryNPC NewObject = Resources.Load<CharacterAngryNPC>("Character/CharacterAngryNPC/objAngryNPC");
         NewObject.transform.position = StartPos;
         return Instantiate(NewObject);
     }
@@ -82,8 +82,9 @@ public class CharacterAngryNPC : Character, IMissileVisitor
             return;
 
         Rigidbody rb = GetComponent<Rigidbody>();
-        Vector3 dir = (Target.transform.position - rb.transform.position).normalized;
-        GetComponent<Rigidbody>().MovePosition(transform.position + dir * WalkSpeed * Time.fixedDeltaTime);
+        Vector3 dir = (Target.transform.position - rb.transform.position).normalized * WalkSpeed;
+        rb.MovePosition(transform.position + dir * Time.fixedDeltaTime);
+        rb.MoveRotation(Quaternion.LookRotation(dir));
     }
 
     //Методы для атаки
