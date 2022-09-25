@@ -7,7 +7,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     //=============================================================================================
     //Ссылки на другие объекты
     public Character Target { get; private set; }
-    public AreaMelee MeleeArea;
+    public int AttackDistance { get; private set; }
     //=============================================================================================
 
     //=============================================================================================
@@ -30,22 +30,17 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     protected override void CharacterAwake()
     {
         base.CharacterAwake();
+        AttackDistance = 4;
         stateMachine = new StateMachine();
         stateMachine.Initialize(new AngryNPCStateIdle(this));
+    }
+    public void Update()
+    {
+        stateMachine.CurrentState.LogicUpdate();
     }
     public void FixedUpdate()
     {
         stateMachine.CurrentState.PhysicsUpdate();
-    }
-    private void OnEnable()
-    {
-        MeleeArea.AtRange += StartAttacking;
-        MeleeArea.OutOfRange += FollowTarget;
-    }
-    private void OnDisable()
-    {
-        MeleeArea.AtRange -= StartAttacking;
-        MeleeArea.OutOfRange -= FollowTarget;
     }
     //=============================================================================================
 
@@ -76,21 +71,24 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     }
 
     //Методы для атаки
-    public void StartAttacking(Character character)
+    public void StartAttacking()
     {
         stateMachine.ChangeState(new AngryNPCStateAttacking(this));
     }
     public void HitTarget()
     {
-        Character CharacterTarget = Target.GetComponent<Character>();
-        CharacterTarget.SetHealth(CharacterTarget.Health - force);
+        if (Vector3.Distance(transform.position, Target.transform.position) > AttackDistance)
+        {
+            FollowTarget(Target);
+            return;
+        }
+        Target.SetHealth(Target.Health - force);
     }
 
     //Метод для спокойствия
     public void CalmDown()
     {
         Target = null;
-        MeleeArea.Sleep = true;
         stateMachine.ChangeState(new AngryNPCStateIdle(this));
     }
 

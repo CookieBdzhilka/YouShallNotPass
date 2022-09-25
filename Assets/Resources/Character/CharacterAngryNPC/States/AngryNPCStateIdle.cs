@@ -11,13 +11,11 @@ public class AngryNPCStateIdle : AngryNPCState
     public override void Enter()
     {
         CharacterAngryNPC AngryNPCContext = (ContextObject as CharacterAngryNPC);
-        AngryNPCContext.MeleeArea.Sleep = true;
         AngryNPCContext.PlayAnimation("Idle");
     }
 
     public override void Exit()
     {
         CharacterAngryNPC AngryNPCContext = (ContextObject as CharacterAngryNPC);
-        AngryNPCContext.MeleeArea.Sleep = false;
     }
 }

@@ -19,4 +19,12 @@ public class AngryNPCStateAttack : AngryNPCState
         CharacterAngryNPC characterAngryNPC = ContextObject as CharacterAngryNPC;
         characterAngryNPC.MoveToTarget();
     }
+    public override void LogicUpdate()
+    {
+        CharacterAngryNPC characterAngryNPC = ContextObject as CharacterAngryNPC;
+        if(Vector3.Distance(characterAngryNPC.transform.position, characterAngryNPC.Target.transform.position) <= characterAngryNPC.AttackDistance)
+        {
+            characterAngryNPC.StartAttacking();
+        }
+    }
 }

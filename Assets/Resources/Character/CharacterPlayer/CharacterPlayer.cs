@@ -37,7 +37,7 @@ public class CharacterPlayer : Character, IControllObject
     {
         stateMachine.CurrentState.LogicUpdate();
     }
-        private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<ICharacterPlayerVisitor>() != null)
         {

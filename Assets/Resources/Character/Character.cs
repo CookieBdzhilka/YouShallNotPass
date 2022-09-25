@@ -55,10 +55,9 @@ public abstract class Character : MonoBehaviour
         health = NewHealth;
         if (health <= 0)
         {
+            health = -1;
             Dead();
-            health = 0;
         }
-        Debug.Log(health);
         OnHealthChanged?.Invoke(health);
     }
     public virtual void Dead()
