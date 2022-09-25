@@ -6,7 +6,6 @@ public class CharacterPlayer : Character, IControllObject
 {
     //=============================================================================================
     //Ссылки на другие объекты
-    public PlayerPrefab playerPrefab;
     public Canvas PlayerHUD;
     public StateMachine stateMachine { get; private set; }
     //=============================================================================================
@@ -21,7 +20,7 @@ public class CharacterPlayer : Character, IControllObject
     //Методы Unity
     private void Awake()
     {
-        PlayerRB = playerPrefab.GetComponent<Rigidbody>();
+        PlayerRB = GetComponent<Rigidbody>();
 
         stateMachine = new StateMachine();
         stateMachine.Initialize(new PlayerStateAlive(this));
@@ -32,19 +31,23 @@ public class CharacterPlayer : Character, IControllObject
     {
         FindObjectOfType<MoveController>().controllObject = this;
     }
-    private void OnEnable()
-    {
-        playerPrefab.OnTriggerEnterEvent += IEnter;
-        playerPrefab.OnTriggerExitEvent += IExit;
-    }
-    private void OnDisable()
-    {
-        playerPrefab.OnTriggerEnterEvent -= IEnter;
-        playerPrefab.OnTriggerExitEvent -= IExit;
-    }
     private void Update()
     {
         stateMachine.CurrentState.LogicUpdate();
+    }
+        private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<ICharacterPlayerVisitor>() != null)
+        {
+            IEnter(other.GetComponent<ICharacterPlayerVisitor>());
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<ICharacterPlayerVisitor>() != null)
+        {
+            IExit(other.GetComponent<ICharacterPlayerVisitor>());
+        }
     }
     //=============================================================================================
 
@@ -68,14 +71,9 @@ public class CharacterPlayer : Character, IControllObject
     //Возможности объекта
     public void Move(Vector2 MoveVector)
     {
-        Vector3 NewPos = new Vector3(MoveVector.x, 0f, MoveVector.y) * WalkSpeed;
-        NewPos = Vector3.ClampMagnitude(NewPos, WalkSpeed);
+        Vector3 NewPos = new Vector3(-MoveVector.y, 0f, MoveVector.x) * WalkSpeed; 
+        PlayerRB.velocity = NewPos;
         PlayerRB.MoveRotation(Quaternion.LookRotation(NewPos));
-
-        NewPos.x = transform.position.x - MoveVector.y;
-        NewPos.z = transform.position.z + MoveVector.x;
-        NewPos.y = transform.position.y;
-        transform.position = Vector3.MoveTowards(transform.position, NewPos, WalkSpeed * MoveVector.magnitude * Time.deltaTime);
     }
     public void StartShooting()
     {
