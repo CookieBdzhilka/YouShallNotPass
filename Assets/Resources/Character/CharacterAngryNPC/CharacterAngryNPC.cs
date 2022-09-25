@@ -81,11 +81,9 @@ public class CharacterAngryNPC : Character, IMissileVisitor
         if (Target == null)
             return;
 
-        Vector3 RotationVector = new Vector3(Target.transform.position.x, 0f, Target.transform.position.z);
-        RotationVector = Vector3.ClampMagnitude(RotationVector, WalkSpeed);
-        GetComponent<Rigidbody>().MoveRotation(Quaternion.LookRotation(RotationVector));
-
-        transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, WalkSpeed * Time.deltaTime);
+        Rigidbody rb = GetComponent<Rigidbody>();
+        Vector3 dir = (Target.transform.position - rb.transform.position).normalized;
+        GetComponent<Rigidbody>().MovePosition(transform.position + dir * WalkSpeed * Time.fixedDeltaTime);
     }
 
     //Методы для атаки
