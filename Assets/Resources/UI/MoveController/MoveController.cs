@@ -39,6 +39,7 @@ public class MoveController : MonoBehaviour
         //StopCoroutine(nameof(MoveAtPointerCorut))
         OnControl = false;
         ResetJoyStick();
+        controllObject?.StopObject();
     }
     public void ResetJoyStick()
     {

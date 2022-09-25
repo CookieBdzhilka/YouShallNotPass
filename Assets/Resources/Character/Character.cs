@@ -17,6 +17,11 @@ public abstract class Character : MonoBehaviour
     //=============================================================================================
 
     //=============================================================================================
+    //Анимации
+    protected Animator animator;
+    //=============================================================================================
+
+    //=============================================================================================
     //События персонажа
     public UnityAction<Character> OnDestroyEvent;
     public UnityAction OnDeadEvent;
@@ -25,14 +30,26 @@ public abstract class Character : MonoBehaviour
 
     //=============================================================================================
     //Unity методы
+    private void Awake()
+    {
+        CharacterAwake();
+    }
     private void OnDestroy()
     {
         OnDestroyEvent?.Invoke(this);
+    }
+    protected virtual void CharacterAwake()
+    {
+        animator = GetComponent<Animator>();
     }
     //=============================================================================================
 
     //=============================================================================================
     //Методы объекта
+    public void PlayAnimation(string animName)
+    {
+        animator.Play(animName);
+    }
     public void SetHealth(int NewHealth)
     {
         health = NewHealth;
@@ -41,6 +58,7 @@ public abstract class Character : MonoBehaviour
             Dead();
             health = 0;
         }
+        Debug.Log(health);
         OnHealthChanged?.Invoke(health);
     }
     public virtual void Dead()

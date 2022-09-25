@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IControllObject
 {
     public void MoveObject(Vector2 MoveVector);
+    public void StopObject();
 }

@@ -9,12 +9,13 @@ public class Missile : MonoBehaviour
 
     //=============================================================================================
     //Статичные методы
-    public static Missile CreateMe(GameObject target, Vector3 StartPos = new Vector3())
+    public static Missile CreateMe(GameObject target, Vector3 StartPos = new Vector3(), int damage = 1)
     {
-        Missile NewObject = Resources.Load<Missile>("Missile/objMissile");
+        Missile NewObject = Instantiate(Resources.Load<Missile>("Missile/objMissile"));
         NewObject.transform.position = StartPos;
         NewObject.Target = target;
-        return Instantiate(NewObject);
+        NewObject.Damage = damage;
+        return NewObject;
     }
     //=============================================================================================
 

@@ -18,12 +18,14 @@ public class CharacterPlayer : Character, IControllObject
 
     //=============================================================================================
     //Методы Unity
-    private void Awake()
+    protected override void CharacterAwake()
     {
+        base.CharacterAwake();
+
         PlayerRB = GetComponent<Rigidbody>();
 
         stateMachine = new StateMachine();
-        stateMachine.Initialize(new PlayerStateAlive(this));
+        stateMachine.Initialize(new PlayerStateIdle(this));
 
         StartPos = transform.position;
     }
@@ -67,10 +69,15 @@ public class CharacterPlayer : Character, IControllObject
     {
         (stateMachine.CurrentState as PlayerState).MoveObjectCommand(MoveVector);
     }
+    public void StopObject()
+    {
+        stateMachine.ChangeState(new PlayerStateIdle(this));
+    }
 
     //Возможности объекта
     public void Move(Vector2 MoveVector)
     {
+        stateMachine.ChangeState(new PlayerStateWalk(this));
         Vector3 NewPos = new Vector3(-MoveVector.y, 0f, MoveVector.x) * WalkSpeed; 
         PlayerRB.velocity = NewPos;
         PlayerRB.MoveRotation(Quaternion.LookRotation(NewPos));
@@ -92,8 +99,9 @@ public class CharacterPlayer : Character, IControllObject
     {
         transform.position = StartPos;
         health = 10;
-        stateMachine.ChangeState(new PlayerStateAlive(this));
+        stateMachine.ChangeState(new PlayerStateIdle(this));
     }
+
     //=============================================================================================
 
     //=============================================================================================
@@ -120,7 +128,7 @@ public class CharacterPlayer : Character, IControllObject
                 }
             }
 
-            Missile.CreateMe(ClosiestEnemy.gameObject, transform.position);
+            Missile.CreateMe(ClosiestEnemy.gameObject, transform.position + new Vector3(0, transform.GetComponent<CapsuleCollider>().bounds.size.y, 0), 2);
         }
     }
     //=============================================================================================

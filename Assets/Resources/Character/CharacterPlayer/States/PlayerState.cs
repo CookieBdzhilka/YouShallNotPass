@@ -10,11 +10,11 @@ public class PlayerState : State
     }
     public virtual void IEnter(ICharacterPlayerVisitor playerVisitor)
     {
-
+        playerVisitor.CharacterPlaerEnter(ContextObject as CharacterPlayer);
     }
     public virtual void IExit(ICharacterPlayerVisitor playerVisitor)
     {
-
+        playerVisitor.CharacterPlayerExit(ContextObject as CharacterPlayer);
     }
     public virtual void MoveObjectCommand(Vector2 NewPos)
     {
@@ -23,6 +23,8 @@ public class PlayerState : State
     }
     public virtual void Die()
     {
-
+        CharacterPlayer cp = ContextObject as CharacterPlayer;
+        cp.stateMachine.ChangeState(new PlayerStateDead(cp));
+        cp.OnDeadEvent?.Invoke();
     }
 }

@@ -46,7 +46,6 @@ public class AreaFight : Area, ICharacterPlayerVisitor
     }
     public void CharacterPlaerEnter(CharacterPlayer characterPlayer)
     {
-        Debug.Log("Игрок вошел в меня!");
         Intrudor = characterPlayer;
         stateMachine.Initialize(new AreaFightStateWar(this));
         characterPlayer.StartShooting();
@@ -54,7 +53,6 @@ public class AreaFight : Area, ICharacterPlayerVisitor
     }
     public void CharacterPlayerExit(CharacterPlayer characterPlayer)
     {
-        Debug.Log("Игрок вышел из меня!");
         Intrudor = null;
         stateMachine.Initialize(new AreaFightStateIdle(this));
         characterPlayer.StopShooting();
@@ -68,7 +66,7 @@ public class AreaFight : Area, ICharacterPlayerVisitor
     {
         while (true)
         {
-            while (Enemies.Count < 10)
+            while (Enemies.Count < 5)
             {
                 Vector3 RandomPos;
                 Vector3 MyBoundSize = GetComponent<MeshRenderer>().bounds.size;

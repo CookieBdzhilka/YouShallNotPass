@@ -16,11 +16,6 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     //=============================================================================================
 
     //=============================================================================================
-    //Анимации
-    Animator animator;
-    //=============================================================================================
-
-    //=============================================================================================
     //Статические методы
     public static CharacterAngryNPC CreateMe(Vector3 StartPos = new Vector3())
     {
@@ -32,10 +27,9 @@ public class CharacterAngryNPC : Character, IMissileVisitor
 
     //=============================================================================================
     //Методы Unity
-    private void Awake()
+    protected override void CharacterAwake()
     {
-        animator = GetComponent<Animator>();
-
+        base.CharacterAwake();
         stateMachine = new StateMachine();
         stateMachine.Initialize(new AngryNPCStateIdle(this));
     }
@@ -57,12 +51,6 @@ public class CharacterAngryNPC : Character, IMissileVisitor
 
     //=============================================================================================
     //Методы объекта
-
-    //Анимирование объекта
-    public void PlayAnimation(string animName)
-    {
-        animator.Play(animName);
-    }
 
     //Комманды, которые может исполинть объект
     public void CommandToFollow(Character target)
