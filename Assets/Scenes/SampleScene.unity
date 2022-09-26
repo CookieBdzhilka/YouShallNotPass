@@ -920,6 +920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UpdateCost: 10
+  TXT: Health
 --- !u!1 &961645450
 GameObject:
   m_ObjectHideFlags: 0
@@ -1097,6 +1098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UpdateCost: 20
+  TXT: Force
 --- !u!1 &1192200554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,6 +1257,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb6af22f502927a48a8634f452df48d9, type: 3}
+--- !u!1 &1537991366 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7150606989808773582, guid: eb6af22f502927a48a8634f452df48d9, type: 3}
+  m_PrefabInstance: {fileID: 1302753973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1537991371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537991366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee44cd3b46e8f446bd48df804735a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateCost: 15
+  TXT: Fire Speed
 --- !u!1001 &1705859086
 PrefabInstance:
   m_ObjectHideFlags: 0

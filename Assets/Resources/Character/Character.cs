@@ -11,6 +11,7 @@ public abstract class Character : MonoBehaviour
     protected int maxHealth = 10;
     protected int health = 10;
     protected int force;
+    protected float shootSpeed;
 
     public int Health
     {
@@ -35,6 +36,11 @@ public abstract class Character : MonoBehaviour
     {
         get { return force; }
         set { force = value; }
+    }
+    public float ShootSpeed
+    {
+        get { return shootSpeed; }
+        set { shootSpeed = value; }
     }
     //=============================================================================================
 

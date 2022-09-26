@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpdateHealth : UpdateFather
+public class UpdateShootSpeed : UpdateFather
 {
     protected override void AbstractEffect(CharacterPlayer characterPlayer)
     {
-        characterPlayer.Health = characterPlayer.MaxHealth;
+        characterPlayer.ShootSpeed = characterPlayer.ShootSpeed - 0.1f;
     }
 }

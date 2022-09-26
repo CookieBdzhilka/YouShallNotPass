@@ -52,6 +52,7 @@ public class CharacterPlayer : Character, IControllObject
         force = 3;
         maxHealth = 20;
         health = maxHealth;
+        shootSpeed = 1f;
     }
     private void Start()
     {
@@ -146,7 +147,7 @@ public class CharacterPlayer : Character, IControllObject
     {
         while (true)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(shootSpeed);
             CharacterAngryNPC[] NPCArray = FindObjectsOfType<CharacterAngryNPC>();
 
             if (NPCArray.Length <= 0)
