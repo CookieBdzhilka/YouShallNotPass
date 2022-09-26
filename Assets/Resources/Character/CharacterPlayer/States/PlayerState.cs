@@ -21,10 +21,14 @@ public class PlayerState : State
         CharacterPlayer cp = (ContextObject as CharacterPlayer);
         cp.Move(NewPos);
     }
+    public virtual void StopCommand()
+    {
+        CharacterPlayer cp = (ContextObject as CharacterPlayer);
+        cp.Stop();
+    }
     public virtual void Die()
     {
         CharacterPlayer cp = ContextObject as CharacterPlayer;
         cp.stateMachine.ChangeState(new PlayerStateDead(cp));
-        cp.OnDeadEvent?.Invoke();
     }
 }

@@ -71,7 +71,11 @@ public class CharacterPlayer : Character, IControllObject
     }
     public void StopObject()
     {
-        stateMachine.ChangeState(new PlayerStateIdle(this));
+        (stateMachine.CurrentState as PlayerState).StopCommand();
+    }
+    public override void Dead()
+    {
+        (stateMachine.CurrentState as PlayerState).Die();
     }
 
     //Возможности объекта
@@ -82,6 +86,10 @@ public class CharacterPlayer : Character, IControllObject
         PlayerRB.velocity = NewPos;
         PlayerRB.MoveRotation(Quaternion.LookRotation(NewPos));
     }
+    public void Stop()
+    {
+        stateMachine.ChangeState(new PlayerStateIdle(this));
+    }
     public void StartShooting()
     {
         StopCoroutine(nameof(Shoot));
@@ -90,10 +98,6 @@ public class CharacterPlayer : Character, IControllObject
     public void StopShooting()
     {
         StopCoroutine(nameof(Shoot));
-    }
-    public override void Dead()
-    {
-        (stateMachine.CurrentState as PlayerState).Die();
     }
     public void Ressurect()
     {

@@ -10,12 +10,10 @@ public class GameOverManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.OnDeadEvent += ShowGameOverWindow;
         SceneManager.sceneLoaded += FindPlayer;
     }
     private void OnDisable()
     {
-        Player.OnDeadEvent -= ShowGameOverWindow;
         SceneManager.sceneLoaded -= FindPlayer;
     }
     private void ShowGameOverWindow()

@@ -11,9 +11,11 @@ public class PlayerStateDead : PlayerState
     {
         CharacterPlayer PlayerContext = (ContextObject as CharacterPlayer);
         PlayerContext.StopShooting();
-        //PlayerContext.PlayAnimation("Dead");
+        PlayerContext.PlayAnimation("Idle");
+        PlayerContext.OnDeadEvent?.Invoke();
     }
     public override void Die(){}
+    public override void StopCommand() { }
     public override void IEnter(ICharacterPlayerVisitor playerVisitor){}
 
     public override void IExit(ICharacterPlayerVisitor playerVisitor){}
