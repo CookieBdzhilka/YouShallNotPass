@@ -195,6 +195,8 @@ MonoBehaviour:
   HealthRef: {fileID: 0}
   objHealth: {fileID: 6837380396118339469}
   HealthText: {fileID: 8291569036551541042}
+  MaxWidth: 0
+  RightOffset: 0
 --- !u!1 &6837380396118339469
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CharacterPlayer : Character, IControllObject
 {
@@ -14,6 +15,26 @@ public class CharacterPlayer : Character, IControllObject
     //Личные поля
     private Rigidbody PlayerRB;
     private Vector3 StartPos;
+    [SerializeField]
+    private int bonusCount = 0;
+    //=============================================================================================
+
+    //=============================================================================================
+    //Свойства
+    public int BonusCount
+    {
+        get { return bonusCount; }
+        set
+        {
+            bonusCount = value;
+            OnBonusChanged?.Invoke(bonusCount);
+        }
+    }
+    //=============================================================================================
+
+    //=============================================================================================
+    //События
+    public UnityAction<int> OnBonusChanged;
     //=============================================================================================
 
     //=============================================================================================
@@ -51,6 +72,20 @@ public class CharacterPlayer : Character, IControllObject
             IExit(other.GetComponent<ICharacterPlayerVisitor>());
         }
     }
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.GetComponent<ICharacterPlayerVisitor>() != null)
+        {
+            IEnter(other.gameObject.GetComponent<ICharacterPlayerVisitor>());
+        }
+    }
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.GetComponent<ICharacterPlayerVisitor>() != null)
+        {
+            IExit(other.gameObject.GetComponent<ICharacterPlayerVisitor>());
+        }
+    }
     //=============================================================================================
 
     //=============================================================================================
@@ -82,7 +117,7 @@ public class CharacterPlayer : Character, IControllObject
     public void Move(Vector2 MoveVector)
     {
         stateMachine.ChangeState(new PlayerStateWalk(this));
-        Vector3 NewPos = new Vector3(-MoveVector.y, 0f, MoveVector.x) * WalkSpeed; 
+        Vector3 NewPos = new Vector3(-MoveVector.y, 0f, MoveVector.x) * WalkSpeed;
         PlayerRB.velocity = NewPos;
         PlayerRB.MoveRotation(Quaternion.LookRotation(NewPos));
     }
@@ -112,7 +147,7 @@ public class CharacterPlayer : Character, IControllObject
     //Корутины
     public IEnumerator Shoot()
     {
-        while(true)
+        while (true)
         {
             yield return new WaitForSeconds(1);
             CharacterAngryNPC[] NPCArray = FindObjectsOfType<CharacterAngryNPC>();
@@ -126,13 +161,13 @@ public class CharacterPlayer : Character, IControllObject
             CharacterAngryNPC ClosiestEnemy = NPCArray[0];
             foreach (var Enemy in NPCArray)
             {
-                if(Vector3.Distance(transform.position, ClosiestEnemy.transform.position) > Vector3.Distance(transform.position, Enemy.transform.position))
+                if (Vector3.Distance(transform.position, ClosiestEnemy.transform.position) > Vector3.Distance(transform.position, Enemy.transform.position))
                 {
                     ClosiestEnemy = Enemy;
                 }
             }
 
-            Missile.CreateMe(ClosiestEnemy.gameObject, transform.position + new Vector3(0, transform.GetComponent<CapsuleCollider>().bounds.size.y, 0), 2);
+            Missile.CreateMe(ClosiestEnemy.gameObject, transform.position + new Vector3(0, transform.GetComponent<CapsuleCollider>().bounds.size.y, 0), 10);
         }
     }
     //=============================================================================================

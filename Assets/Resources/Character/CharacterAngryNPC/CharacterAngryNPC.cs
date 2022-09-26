@@ -102,6 +102,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     public override void Dead()
     {
         Destroy(gameObject);
+        Bonus.CreateMe(transform.position + new Vector3(0,2,0), 2);
     }
     //=============================================================================================
 }
