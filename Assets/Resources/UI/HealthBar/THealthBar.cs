@@ -39,7 +39,7 @@ public class THealthBar : MonoBehaviour
     {
         int MaxHealth = HealthRef.MaxHealth;
         Vector2 NewOffset;
-        NewOffset.x = -((MaxWidth / MaxHealth) * (MaxHealth - NewHealth));
+        NewOffset.x = -((MaxWidth / MaxHealth) * (MaxHealth - NewHealth) - RightOffset);
         NewOffset.y = objHealth.GetComponent<RectTransform>().offsetMax.y;
         objHealth.GetComponent<RectTransform>().offsetMax = NewOffset;
 

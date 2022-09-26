@@ -434,7 +434,7 @@ PrefabInstance:
       objectReference: {fileID: 7043073345226776295}
     - target: {fileID: 5044073265524293785, guid: 8671c7350101a414b9a0a1e4e03d79e5, type: 3}
       propertyPath: CountText
-      value: "\u0417\u043E\u043B\u043E\u0442\u043E"
+      value: 'Gold:'
       objectReference: {fileID: 0}
     - target: {fileID: 6614818474942118986, guid: 8671c7350101a414b9a0a1e4e03d79e5, type: 3}
       propertyPath: m_Pivot.x

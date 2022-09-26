@@ -17,4 +17,12 @@ public class AngryNPCStateAttacking : AngryNPCState
         CharacterAngryNPC AngryNPCContext = (ContextObject as CharacterAngryNPC);
         AngryNPCContext.PlayAnimation("Attack");
     }
+    public override void LogicUpdate()
+    {
+        CharacterAngryNPC characterAngryNPC = ContextObject as CharacterAngryNPC;
+        if (Vector3.Distance(characterAngryNPC.transform.position, characterAngryNPC.Target.transform.position) > characterAngryNPC.AttackDistance)
+        {
+            characterAngryNPC.FollowTarget(characterAngryNPC.Target);
+        }
+    }
 }
