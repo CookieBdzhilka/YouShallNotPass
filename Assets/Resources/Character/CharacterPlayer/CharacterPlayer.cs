@@ -8,6 +8,10 @@ public class CharacterPlayer : Character, IControllObject
     //=============================================================================================
     //Ссылки на другие объекты
     public Canvas PlayerHUD;
+
+
+    //=============================================================================================
+    //Анимация
     public StateMachine stateMachine { get; private set; }
     //=============================================================================================
 
@@ -56,6 +60,7 @@ public class CharacterPlayer : Character, IControllObject
     }
     private void Start()
     {
+        //Задаю длемент контролирующий передвижение игрока
         FindObjectOfType<MoveController>().controllObject = this;
     }
     private void Update()
@@ -103,7 +108,7 @@ public class CharacterPlayer : Character, IControllObject
     {
         (stateMachine.CurrentState as PlayerState).IExit(other);
     }
-    //Команда двигаться
+    //Команды
     public void MoveObject(Vector2 MoveVector)
     {
         (stateMachine.CurrentState as PlayerState).MoveObjectCommand(MoveVector);
@@ -114,7 +119,7 @@ public class CharacterPlayer : Character, IControllObject
     }
     public override void Dead()
     {
-        (stateMachine.CurrentState as PlayerState).Die();
+        (stateMachine.CurrentState as PlayerState).DieCommand();
     }
 
     //Возможности объекта
@@ -122,8 +127,7 @@ public class CharacterPlayer : Character, IControllObject
     {
         stateMachine.ChangeState(new PlayerStateWalk(this));
         Vector3 NewPos = new Vector3(-MoveVector.y, 0f, MoveVector.x) * WalkSpeed;
-        PlayerRB.velocity = NewPos;
-
+        PlayerRB.MovePosition(transform.position + NewPos * Time.fixedDeltaTime);
         PlayerRB.MoveRotation(Quaternion.LookRotation(NewPos * Time.fixedDeltaTime));
     }
     public void Stop()
@@ -139,7 +143,6 @@ public class CharacterPlayer : Character, IControllObject
     {
         StopCoroutine(nameof(Shoot));
     }
-
     //=============================================================================================
 
     //=============================================================================================

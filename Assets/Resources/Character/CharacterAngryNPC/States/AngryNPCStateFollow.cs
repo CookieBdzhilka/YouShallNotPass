@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AngryNPCStateAttack : AngryNPCState
+public class AngryNPCStateFollow : AngryNPCState
 {
-    public AngryNPCStateAttack(CharacterAngryNPC Object) : base(Object)
+    public AngryNPCStateFollow(CharacterAngryNPC Object) : base(Object)
     {
     }
 

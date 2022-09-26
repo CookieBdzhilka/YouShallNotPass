@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class THealthBar : MonoBehaviour
 {
-    public static string PrefabPath { get { return "Objects/UI/HealthBar/objHealthBar"; } private set { return; } }
-
+    //Наблюдаемый объект
     [SerializeField] public Character HealthRef;
+    //Полоска здоровья
     [SerializeField] public GameObject objHealth;
+    //Текст
     [SerializeField] public Text HealthText;
 
     [SerializeField]
@@ -16,6 +17,8 @@ public class THealthBar : MonoBehaviour
     [SerializeField]
     private float RightOffset;
 
+    //=============================================================================================
+    //Методы Unity
     public void Start()
     {
         MaxWidth = GetComponent<RectTransform>().sizeDelta.x;
@@ -28,11 +31,15 @@ public class THealthBar : MonoBehaviour
     {
         HealthRef.OnHealthChanged -= OnHealthChanged;
     }
+    //=============================================================================================
+
+    //=============================================================================================
+    //Методы объекта
     public void OnHealthChanged(int NewHealth)
     {
         int MaxHealth = HealthRef.MaxHealth;
         Vector2 NewOffset;
-        NewOffset.x = -((MaxWidth / MaxHealth) * (MaxHealth - NewHealth) + RightOffset);
+        NewOffset.x = -((MaxWidth / MaxHealth) * (MaxHealth - NewHealth));
         NewOffset.y = objHealth.GetComponent<RectTransform>().offsetMax.y;
         objHealth.GetComponent<RectTransform>().offsetMax = NewOffset;
 
@@ -42,4 +49,5 @@ public class THealthBar : MonoBehaviour
     {
         HealthText.text = $"Health: {HealthRef.Health}/ {HealthRef.MaxHealth}";
     }
+    //=============================================================================================
 }

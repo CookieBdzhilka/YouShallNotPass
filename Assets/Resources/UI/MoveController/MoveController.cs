@@ -57,7 +57,7 @@ public class MoveController : MonoBehaviour
     }
     public void MoveAtPointerCorut()
     {
-        Vector3 MousePos = new Vector3();
+        Vector3 MousePos;
 
         if (Input.touches.Length > 0)
             MousePos = Input.touches[0].position;

@@ -58,7 +58,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     public void FollowTarget(Character target)
     {
         Target = target;
-        stateMachine.ChangeState(new AngryNPCStateAttack(this));
+        stateMachine.ChangeState(new AngryNPCStateFollow(this));
     }
     public void MoveToTarget()
     {
@@ -68,7 +68,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
         Rigidbody rb = GetComponent<Rigidbody>();
         Vector3 dir = (Target.transform.position - rb.transform.position).normalized * WalkSpeed;
         rb.MovePosition(transform.position + dir * Time.fixedDeltaTime);
-        rb.MoveRotation(Quaternion.LookRotation(dir));
+        rb.MoveRotation(Quaternion.LookRotation(dir * Time.fixedDeltaTime));
     }
 
     //Методы для атаки
@@ -76,6 +76,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     {
         stateMachine.ChangeState(new AngryNPCStateAttacking(this));
     }
+    //Вызывается на событие в анимации
     public void HitTarget()
     {
         if (Vector3.Distance(transform.position, Target.transform.position) > AttackDistance)
@@ -103,7 +104,10 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     public override void Dead()
     {
         Destroy(gameObject);
-        Bonus.CreateMe(transform.position + new Vector3(0,2,0), 2);
+
+        int Casino = Random.Range(1, 100);
+        if(Casino >= 1 && Casino <= 50)
+            Bonus.CreateMe(transform.position + new Vector3(0,2,0), 2);
     }
     //=============================================================================================
 }

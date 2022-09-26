@@ -13,9 +13,4 @@ public class AngryNPCStateIdle : AngryNPCState
         CharacterAngryNPC AngryNPCContext = (ContextObject as CharacterAngryNPC);
         AngryNPCContext.PlayAnimation("Idle");
     }
-
-    public override void Exit()
-    {
-        CharacterAngryNPC AngryNPCContext = (ContextObject as CharacterAngryNPC);
-    }
 }

@@ -44,6 +44,7 @@ public class AreaFight : Area, ICharacterPlayerVisitor
         CommandCalm -= Enemy.CalmDown;
         Enemies.Remove(Enemy);
     }
+    //Переопределения методов ICharacterPlayerVisitor
     public void CharacterPlaerEnter(CharacterPlayer characterPlayer)
     {
         Intrudor = characterPlayer;

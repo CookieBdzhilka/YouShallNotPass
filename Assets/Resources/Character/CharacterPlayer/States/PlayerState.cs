@@ -26,7 +26,7 @@ public class PlayerState : State
         CharacterPlayer cp = (ContextObject as CharacterPlayer);
         cp.Stop();
     }
-    public virtual void Die()
+    public virtual void DieCommand()
     {
         CharacterPlayer cp = ContextObject as CharacterPlayer;
         cp.stateMachine.ChangeState(new PlayerStateDead(cp));

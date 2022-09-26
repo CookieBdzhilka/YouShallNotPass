@@ -14,7 +14,7 @@ public class PlayerStateDead : PlayerState
         PlayerContext.PlayAnimation("Idle");
         PlayerContext.OnDeadEvent?.Invoke();
     }
-    public override void Die(){}
+    public override void DieCommand(){}
     public override void StopCommand() { }
     public override void IEnter(ICharacterPlayerVisitor playerVisitor){}
 
