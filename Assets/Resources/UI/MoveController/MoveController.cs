@@ -31,12 +31,10 @@ public class MoveController : MonoBehaviour
     //Методы класса
     public void MoveAtPointer()
     {
-        //StartCoroutine(nameof(MoveAtPointerCorut));
         OnControl = true;
     }
     public void StopMoveAtPointer()
     {
-        //StopCoroutine(nameof(MoveAtPointerCorut))
         OnControl = false;
         ResetJoyStick();
         controllObject?.StopObject();
@@ -59,7 +57,13 @@ public class MoveController : MonoBehaviour
     }
     public void MoveAtPointerCorut()
     {
-        Vector3 MousePos = Input.mousePosition;
+        Vector3 MousePos = new Vector3();
+
+        if (Input.touches.Length > 0)
+            MousePos = Input.touches[0].position;
+        else
+            MousePos = Input.mousePosition;
+
         RectTransform ContainerRect = GetComponent<RectTransform>();
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent<RectTransform>(), MousePos, Camera.main, out var localPosition))
         {

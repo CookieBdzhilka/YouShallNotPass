@@ -123,7 +123,8 @@ public class CharacterPlayer : Character, IControllObject
         stateMachine.ChangeState(new PlayerStateWalk(this));
         Vector3 NewPos = new Vector3(-MoveVector.y, 0f, MoveVector.x) * WalkSpeed;
         PlayerRB.velocity = NewPos;
-        PlayerRB.MoveRotation(Quaternion.LookRotation(NewPos));
+
+        PlayerRB.MoveRotation(Quaternion.LookRotation(NewPos * Time.fixedDeltaTime));
     }
     public void Stop()
     {
