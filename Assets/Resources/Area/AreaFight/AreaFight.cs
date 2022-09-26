@@ -74,7 +74,7 @@ public class AreaFight : Area, ICharacterPlayerVisitor
                 RandomPos.y = MyBoundSize.y;
                 RandomPos.z = Random.Range(-MyBoundSize.z / 3, MyBoundSize.z / 3);
 
-                CharacterAngryNPC NewNPC = CharacterAngryNPC.CreateMe(RandomPos);
+                CharacterAngryNPC NewNPC = CharacterAngryNPC.CreateMe(1, RandomPos);
                 Enemies.Add(NewNPC);
                 NewNPC.OnDestroyEvent += DeleteEnemy;
                 CommandAttack += NewNPC.CommandToFollow;

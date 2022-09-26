@@ -17,11 +17,12 @@ public class CharacterAngryNPC : Character, IMissileVisitor
 
     //=============================================================================================
     //Статические методы
-    public static CharacterAngryNPC CreateMe(Vector3 StartPos = new Vector3())
+    public static CharacterAngryNPC CreateMe(int CaracterForce, Vector3 StartPos = new Vector3())
     {
-        CharacterAngryNPC NewObject = Resources.Load<CharacterAngryNPC>("Character/CharacterAngryNPC/objAngryNPC");
+        CharacterAngryNPC NewObject = Instantiate(Resources.Load<CharacterAngryNPC>("Character/CharacterAngryNPC/objAngryNPC"));
         NewObject.transform.position = StartPos;
-        return Instantiate(NewObject);
+        NewObject.force = CaracterForce;
+        return NewObject;
     }
     //=============================================================================================
 
@@ -82,7 +83,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
             FollowTarget(Target);
             return;
         }
-        Target.SetHealth(Target.Health - force);
+        Target.Health = Target.Health - force;
     }
 
     //Метод для спокойствия
@@ -95,7 +96,7 @@ public class CharacterAngryNPC : Character, IMissileVisitor
     //Реакции объекта
     public void Shooted(Missile missile)
     {
-        SetHealth(health - missile.Damage);
+        Health = Health - missile.Damage;
     }
 
     //Переопределение метода отца

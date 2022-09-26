@@ -14,7 +14,6 @@ public class CharacterPlayer : Character, IControllObject
     //=============================================================================================
     //Личные поля
     private Rigidbody PlayerRB;
-    private Vector3 StartPos;
     [SerializeField]
     private int bonusCount = 0;
     //=============================================================================================
@@ -35,6 +34,8 @@ public class CharacterPlayer : Character, IControllObject
     //=============================================================================================
     //События
     public UnityAction<int> OnBonusChanged;
+    public UnityAction<UpdateFather> OnUpdateAreaEnter;
+    public UnityAction OnUpdateAreaExit;
     //=============================================================================================
 
     //=============================================================================================
@@ -48,7 +49,9 @@ public class CharacterPlayer : Character, IControllObject
         stateMachine = new StateMachine();
         stateMachine.Initialize(new PlayerStateIdle(this));
 
-        StartPos = transform.position;
+        force = 3;
+        maxHealth = 20;
+        health = maxHealth;
     }
     private void Start()
     {
@@ -134,12 +137,6 @@ public class CharacterPlayer : Character, IControllObject
     {
         StopCoroutine(nameof(Shoot));
     }
-    public void Ressurect()
-    {
-        transform.position = StartPos;
-        health = 10;
-        stateMachine.ChangeState(new PlayerStateIdle(this));
-    }
 
     //=============================================================================================
 
@@ -167,7 +164,7 @@ public class CharacterPlayer : Character, IControllObject
                 }
             }
 
-            Missile.CreateMe(ClosiestEnemy.gameObject, transform.position + new Vector3(0, transform.GetComponent<CapsuleCollider>().bounds.size.y, 0), 10);
+            Missile.CreateMe(ClosiestEnemy.gameObject, transform.position + new Vector3(0, transform.GetComponent<CapsuleCollider>().bounds.size.y, 0), force);
         }
     }
     //=============================================================================================

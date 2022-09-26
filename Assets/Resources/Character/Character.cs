@@ -10,10 +10,32 @@ public abstract class Character : MonoBehaviour
     protected float WalkSpeed = 5;
     protected int maxHealth = 10;
     protected int health = 10;
-    protected int force = 2;
+    protected int force;
 
-    public int Health { get { return health; } set { } }
+    public int Health
+    {
+        get { return health; }
+        set
+        {
+            if (value <= 0)
+                value = 0;
+
+            if (health == value)
+                return;
+
+            health = value;
+            if (health == 0)
+                Dead();
+            OnHealthChanged?.Invoke(health);
+        }
+    }
     public int MaxHealth { get { return maxHealth; } set { } }
+
+    public int Force
+    {
+        get { return force; }
+        set { force = value; }
+    }
     //=============================================================================================
 
     //=============================================================================================
@@ -49,16 +71,6 @@ public abstract class Character : MonoBehaviour
     public void PlayAnimation(string animName)
     {
         animator.Play(animName);
-    }
-    public void SetHealth(int NewHealth)
-    {
-        health = NewHealth;
-        if (health <= 0)
-        {
-            health = -1;
-            Dead();
-        }
-        OnHealthChanged?.Invoke(health);
     }
     public virtual void Dead()
     {
