@@ -18,7 +18,7 @@ public class GameOverManager : MonoBehaviour
     }
     private void ShowGameOverWindow()
     {
-        Canvas PlayerCanvas = Player.PlayerHUD;
+        Canvas PlayerCanvas = FindObjectOfType<Canvas>();
         GameOverMenu Window = Instantiate(GameOverWindow);
         Window.RestartButton.onClick.AddListener(() => SceneManager.LoadScene(0));
         Window.transform.SetParent(PlayerCanvas.transform, false);
